@@ -118,9 +118,9 @@ En la carpeta frontend:
 
 
 
-npm install  
+npm install
 
-npm start  
+npm start
 
 
 
@@ -156,9 +156,13 @@ sistema-matriculas/
 
 
 
-\*(Aquí puedes agregar imágenes del sistema: login, listado, pagos, etc.)\*
+!\[Login](./img/login.png)
 
+!\[Lista](./img/lista.png)
 
+!\[Pagos](./img/pagos.png)
+
+!\[Historial](./img/historial.png)
 
 \---
 
@@ -168,17 +172,17 @@ sistema-matriculas/
 
 
 
-✔ Funcional  
+✔ Funcional
 
-✔ CRUD completo  
+✔ CRUD completo
 
-✔ Sistema de pagos  
+✔ Sistema de pagos
 
-✔ Historial implementado  
+✔ Historial implementado
 
-✔ Login básico  
+✔ Login básico
 
-✔ Listo para portafolio  
+✔ Listo para portafolio
 
 
 
