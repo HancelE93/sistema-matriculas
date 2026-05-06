@@ -1,0 +1,299 @@
+
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6fb;
+}
+
+/* ================= CONTENEDOR ================= */
+.container {
+  text-align: center;
+  padding: 30px 10px;
+}
+
+/* ================= FORMULARIO ================= */
+.form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 340px;
+  margin: 0 auto 25px auto;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form h2 {
+  margin-bottom: 10px;
+}
+
+/* inputs más aireados */
+.form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76,175,80,0.3);
+}
+
+/* botón */
+.form button {
+  width: 100%;
+  background: #4caf50;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form button:hover {
+  background: #43a047;
+}
+
+/* ================= GRID ================= */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  width: 420px;
+  margin: 0 auto;
+}
+
+/* ================= CARD ================= */
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  margin: 2px 0;
+  color: #555;
+}
+
+/* ================= BOTONES ================= */
+button {
+  margin: 5px;
+  padding: 7px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* actualizar */
+button:nth-of-type(1) {
+  background: #ff9800;
+  color: white;
+}
+
+/* eliminar */
+button:nth-of-type(2) {
+  background: #f44336;
+  color: white;
+}
+
+/* pagar */
+button:nth-of-type(3) {
+  background: #4caf50;
+  color: white;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* caja modal más limpia */
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 340px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* inputs modal */
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.modal-content input:focus {
+  border-color: #4caf50;
+}
+
+/* botones modal */
+.modal-content button {
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.modal-content button:first-of-type {
+  background: #4caf50;
+  color: white;
+}
+
+.modal-content button:last-of-type {
+  background: #9e9e9e;
+  color: white;
+}
+ /* ================= PAGOS ================= */
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* input monto pago */
+.modal-content input[name="monto"] {
+  background: #f9f9f9;
+}
+
+/* botón pagar (verde fuerte) */
+.modal-content button:first-of-type {
+  background: #2e7d32;
+  color: white;
+  transition: 0.2s;
+}
+
+.modal-content button:first-of-type:hover {
+  background: #1b5e20;
+}
+
+/* ================= HISTORIAL ================= */
+.hist-item {
+  background: #f1f1f1;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 6px 0;
+  text-align: left;
+  border-left: 4px solid #4caf50;
+}
+
+/* texto historial */
+.hist-item p {
+  margin: 3px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+/* título historial */
+.modal-content h2 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* botón cerrar modal historial */
+.modal-content button:last-of-type {
+  background: #616161;
+  color: white;
+  transition: 0.2s;
+}
+
+.modal-content button:last-of-type:hover {
+  background: #424242;
+}
+
+ /* ================= LOGIN ================= */
+.login {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #f4f6fb, #e8f5e9);
+}
+
+.login h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 22px;
+}
+
+/* inputs login */
+.login input {
+  width: 240px;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.login input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 6px rgba(76,175,80,0.3);
+}
+
+/* botón login */
+.login button {
+  width: 260px;
+  padding: 12px;
+  margin-top: 10px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.login button:hover {
+  background: #2e7d32;
+}
+
+/* caja login opcional (mejor look) */
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
