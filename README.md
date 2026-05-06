@@ -156,13 +156,10 @@ sistema-matriculas/
 
 
 
-!\[Login](./img/login.png)
-
-!\[Lista](./img/lista.png)
-
-!\[Pagos](./img/pagos.png)
-
-!\[Historial](./img/historial.png)
+![Inicio de sesión](img/login.png)
+![Lista](img/lista.png)
+![Pagos](img/pagos.png)
+![Historial](img/historial.png)
 
 \---
 
