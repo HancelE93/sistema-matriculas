@@ -1,7 +1,14 @@
+import Login from "./components/Login";
+import ListaEstudiantes from "./components/ListaEstudiantes";
+import FormEstudiante from "./components/FormEstudiante";
+import EditarEstudianteModal from "./components/modals/EditarEstudianteModal";
+import PagoModal from "./components/modals/PagoModal";
+import HistorialModal from "./components/modals/HistorialModal";
 import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
+
   const API = "http://localhost:8080/estudiantes";
   const API_PAGOS = "http://localhost:8080/pagos";
 
@@ -44,12 +51,23 @@ function App() {
     pagado: ""
   });
 
+  // 🔥 LOADING GENERAL (guardar)
+  const [loading, setLoading] = useState(false);
+
+  // 🔥 LOADING PAGOS (nuevo)
+  const [loadingPago, setLoadingPago] = useState(false);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalPago, setModalPago] = useState(false);
   const [modalHistorial, setModalHistorial] = useState(false);
 
   const [editForm, setEditForm] = useState({});
-  const [pagoData, setPagoData] = useState({ cedula: "", monto: "" });
+
+  const [pagoData, setPagoData] = useState({
+    cedula: "",
+    monto: ""
+  });
+
   const [historial, setHistorial] = useState([]);
 
   useEffect(() => {
@@ -65,32 +83,54 @@ function App() {
 
   // ================= FORM =================
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
   };
 
+  // ================= GUARDAR =================
   const guardar = async () => {
-    await fetch(API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    });
 
-    setForm({
-      cedula: "",
-      nombre: "",
-      apellido: "",
-      telefono: "",
-      email: "",
-      deuda: "",
-      pagado: ""
-    });
+    if (loading) return;
 
-    listar();
+    if (!form.cedula || !form.nombre || !form.apellido) {
+      alert("❌ Completa los campos obligatorios");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+
+      setForm({
+        cedula: "",
+        nombre: "",
+        apellido: "",
+        telefono: "",
+        email: "",
+        deuda: "",
+        pagado: ""
+      });
+
+      listar();
+
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ================= ELIMINAR =================
   const eliminar = async (cedula) => {
-    await fetch(`${API}/${cedula}`, { method: "DELETE" });
+    await fetch(`${API}/${cedula}`, {
+      method: "DELETE"
+    });
+
     listar();
   };
 
@@ -101,7 +141,10 @@ function App() {
   };
 
   const handleEditChange = (e) => {
-    setEditForm({ ...editForm, [e.target.name]: e.target.value });
+    setEditForm({
+      ...editForm,
+      [e.target.name]: e.target.value
+    });
   };
 
   const actualizar = async () => {
@@ -117,21 +160,39 @@ function App() {
 
   // ================= PAGOS =================
   const abrirPago = (cedula) => {
-    setPagoData({ cedula, monto: "" });
+    setPagoData({
+      cedula,
+      monto: ""
+    });
+
     setModalPago(true);
   };
 
   const handlePagoChange = (e) => {
-    setPagoData({ ...pagoData, [e.target.name]: e.target.value });
+    setPagoData({
+      ...pagoData,
+      [e.target.name]: e.target.value
+    });
   };
 
+  // 🔥 AQUÍ YA MODIFICADO CON LOADING
   const registrarPago = async () => {
-    await fetch(`${API_PAGOS}/${pagoData.cedula}/${pagoData.monto}`, {
-      method: "POST"
-    });
 
-    setModalPago(false);
-    listar();
+    if (loadingPago) return;
+
+    setLoadingPago(true);
+
+    try {
+      await fetch(`${API_PAGOS}/${pagoData.cedula}/${pagoData.monto}`, {
+        method: "POST"
+      });
+
+      setModalPago(false);
+      listar();
+
+    } finally {
+      setLoadingPago(false);
+    }
   };
 
   // ================= HISTORIAL =================
@@ -146,123 +207,58 @@ function App() {
   // ================= LOGIN SCREEN =================
   if (!logeado) {
     return (
-      <div className="login">
-        <h2>Iniciar Sesión</h2>
-
-        <input
-          placeholder="Usuario"
-          onChange={(e) =>
-            setLogin({ ...login, usuario: e.target.value })
-          }
-        />
-
-        <input
-          type="password"
-          placeholder="Contraseña"
-          onChange={(e) =>
-            setLogin({ ...login, password: e.target.value })
-          }
-        />
-
-        <button onClick={iniciarSesion}>Entrar</button>
-      </div>
+      <Login
+        login={login}
+        setLogin={setLogin}
+        iniciarSesion={iniciarSesion}
+      />
     );
   }
 
-  // ================= APP =================
+  // ================= UI =================
   return (
     <div className="container">
+
       <h1>Sistema de Matrículas</h1>
 
-      {/* FORM */}
-      <div className="form">
-        <h2>Registrar Estudiante</h2>
+      <FormEstudiante
+        form={form}
+        handleChange={handleChange}
+        guardar={guardar}
+        loading={loading}
+      />
 
-        <input name="cedula" placeholder="Cédula" value={form.cedula} onChange={handleChange} />
-        <input name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} />
-        <input name="apellido" placeholder="Apellido" value={form.apellido} onChange={handleChange} />
-        <input name="telefono" placeholder="Teléfono" value={form.telefono} onChange={handleChange} />
-        <input name="email" placeholder="Email" value={form.email} onChange={handleChange} />
-        <input name="deuda" placeholder="Deuda" value={form.deuda} onChange={handleChange} />
-        <input name="pagado" placeholder="Pagado" value={form.pagado} onChange={handleChange} />
+      <ListaEstudiantes
+        estudiantes={estudiantes}
+        abrirEditar={abrirEditar}
+        eliminar={eliminar}
+        abrirPago={abrirPago}
+        verHistorial={verHistorial}
+      />
 
-        <button onClick={guardar}>Guardar</button>
-      </div>
+      <EditarEstudianteModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        editForm={editForm}
+        handleEditChange={handleEditChange}
+        actualizar={actualizar}
+      />
 
-      {/* LISTA */}
-      <div className="grid">
-        {estudiantes.map((e) => (
-          <div className="card" key={e.cedula}>
-            <h3>{e.nombre} {e.apellido}</h3>
-            <p>Cédula: {e.cedula}</p>
-            <p>Teléfono: {e.telefono}</p>
-            <p>Email: {e.email}</p>
-            <p>Deuda: ${e.deuda}</p>
-            <p>Pagado: ${e.pagado}</p>
+      <PagoModal
+        modalPago={modalPago}
+        setModalPago={setModalPago}
+        pagoData={pagoData}
+        handlePagoChange={handlePagoChange}
+        registrarPago={registrarPago}
+        loadingPago={loadingPago}
+      />
 
-            <button onClick={() => abrirEditar(e)}>Actualizar</button>
-            <button onClick={() => eliminar(e.cedula)}>Eliminar</button>
-            <button onClick={() => abrirPago(e.cedula)}>Pagar</button>
-            <button onClick={() => verHistorial(e.cedula)}>Historial</button>
-          </div>
-        ))}
-      </div>
+      <HistorialModal
+        modalHistorial={modalHistorial}
+        setModalHistorial={setModalHistorial}
+        historial={historial}
+      />
 
-      {/* MODAL EDITAR */}
-      {modalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Editar Estudiante</h2>
-
-            <input name="nombre" value={editForm.nombre} onChange={handleEditChange} />
-            <input name="apellido" value={editForm.apellido} onChange={handleEditChange} />
-            <input name="telefono" value={editForm.telefono} onChange={handleEditChange} />
-            <input name="email" value={editForm.email} onChange={handleEditChange} />
-            <input name="deuda" value={editForm.deuda} onChange={handleEditChange} />
-            <input name="pagado" value={editForm.pagado} onChange={handleEditChange} />
-
-            <button onClick={actualizar}>Guardar</button>
-            <button onClick={() => setModalOpen(false)}>Cancelar</button>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL PAGO */}
-      {modalPago && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Registrar Pago</h2>
-
-            <input name="cedula" value={pagoData.cedula} disabled />
-            <input name="monto" placeholder="Monto" value={pagoData.monto} onChange={handlePagoChange} />
-
-            <button onClick={registrarPago}>Pagar</button>
-            <button onClick={() => setModalPago(false)}>Cancelar</button>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL HISTORIAL */}
-      {modalHistorial && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Historial de Pagos</h2>
-
-            {historial.length === 0 ? (
-              <p>No hay pagos</p>
-            ) : (
-              historial.map((p, i) => (
-                <div key={i} className="hist-item">
-                  <p>Monto: ${p.monto}</p>
-                  <p>Fecha: {p.fecha}</p>
-                </div>
-              ))
-            )}
-
-            <button onClick={() => setModalHistorial(false)}>Cerrar</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
