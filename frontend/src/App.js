@@ -9,8 +9,9 @@ import "./App.css";
 
 function App() {
 
-  const API = "http://localhost:8080/estudiantes";
-  const API_PAGOS = "http://localhost:8080/pagos";
+  const API = "https://sistema-matriculas-vp2m.onrender.com/estudiantes";
+
+  const API_PAGOS = "https://sistema-matriculas-vp2m.onrender.com/pagos";
 
   // ================= LOGIN =================
   const [logeado, setLogeado] = useState(false);
@@ -22,7 +23,7 @@ function App() {
 
   const iniciarSesion = async () => {
     try {
-      const res = await fetch("http://localhost:8080/auth/login", {
+      const res = await fetch("https://sistema-matriculas-vp2m.onrender.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(login)
