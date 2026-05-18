@@ -10,7 +10,6 @@ import "./App.css";
 function App() {
 
   const API = "https://sistema-matriculas-vp2m.onrender.com/estudiantes";
-
   const API_PAGOS = "https://sistema-matriculas-vp2m.onrender.com/pagos";
 
   // ================= LOGIN =================
@@ -52,10 +51,7 @@ function App() {
     pagado: ""
   });
 
-  // 🔥 LOADING GENERAL (guardar)
   const [loading, setLoading] = useState(false);
-
-  // 🔥 LOADING PAGOS (nuevo)
   const [loadingPago, setLoadingPago] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -71,8 +67,17 @@ function App() {
 
   const [historial, setHistorial] = useState([]);
 
+  // ================= AUTO REFRESH (AQUÍ ESTÁ LO NUEVO) =================
   useEffect(() => {
-    if (logeado) listar();
+    if (!logeado) return;
+
+    listar(); // carga inicial
+
+    const intervalo = setInterval(() => {
+      listar(); // refresca cada 5 segundos
+    }, 5000);
+
+    return () => clearInterval(intervalo);
   }, [logeado]);
 
   // ================= LISTAR =================
@@ -92,7 +97,6 @@ function App() {
 
   // ================= GUARDAR =================
   const guardar = async () => {
-
     if (loading) return;
 
     if (!form.cedula || !form.nombre || !form.apellido) {
@@ -176,9 +180,7 @@ function App() {
     });
   };
 
-  // 🔥 AQUÍ YA MODIFICADO CON LOADING
   const registrarPago = async () => {
-
     if (loadingPago) return;
 
     setLoadingPago(true);
@@ -189,7 +191,9 @@ function App() {
       });
 
       setModalPago(false);
-      listar();
+
+      // 🔥 actualización inmediata
+      await listar();
 
     } finally {
       setLoadingPago(false);
